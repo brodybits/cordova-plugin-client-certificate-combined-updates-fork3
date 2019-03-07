@@ -1,6 +1,6 @@
-# Cordova Client Certificate Plugin
+# Cordova Client Certificate authentication support plugin
 
-Plugin that uses a client certificate for authentication.
+Plugin that uses a client certificate for authentication, with special `myp12` file association as described below.
 
 This plugin uses iOS implementation and API based on: [`mwaylabs/cordova-plugin-client-certificate`](https://github.com/mwaylabs/cordova-plugin-client-certificate)
 
@@ -16,20 +16,27 @@ LICENSE: Apache 2.0, with some code for iOS under [Apple MIT License](https://sp
 
 <!-- ## About: -->
 
-This plugin handles client certificate request from both iOS and Android WebView; the full path to the certificate is required.
+This plugin handles client certificate request on iOS and Android. On iOS this plugin version supports using client certificates from both file association and local file system, as documented below. On Android this plugin supports using client certificates from the key chain, using shared preferences from the preference manager (code from [`johannes-staehlin/cordova-client-cert-authentication`](https://github.com/johannes-staehlin/cordova-client-cert-authentication)).
 
-This plugin version uses `config-file` elements to configure the app to handle open requests for files with the custom `myp12` extension, by attempting to a register p12 client certificate from such a file with no password, on iOS only.
-
-This plugin reads the certificate in any folder even in a cordova.file.dataDirectory (r/w folder). (So you can retrieve a cert file from an API and use it)
+Specific for iOS:
+- This plugin version uses `config-file` elements to configure the app to handle open requests for files with the custom `myp12` extension, by attempting to a register p12 client certificate from such a file with no password, on iOS only.
+- This plugin reads the certificate in any folder even in a cordova.file.dataDirectory (r/w folder). (So you can retrieve a cert file from an API and use it)
 
 UPDATES NOT TESTED on Android:
 
-- JavaScript updates from mwaylabs/cordova-plugin-client-certificate
-- Android platform implementation was replaced with an implementation similar to johannes-staehlin/cordova-client-cert-authentication and may not work with JavaScript API at all.
+- Android platform implementation was replaced with an implementation similar to johannes-staehlin/cordova-client-cert-authentication, which is not expected to work with JavaScript API at all.
 
 ## Usage
 
 ## Prerequisites
+
+**Recommended:**
+
+Install Cordova File API plugin (`cordova-plugin-file`), as described below:
+
+    $ cordova plugin add cordova-plugin-file
+
+**Optional:**
 
 Add the following to `config.xml`:
 
@@ -41,8 +48,6 @@ Add the following to `config.xml`:
 	<preference name="iosPersistentFileLocation" value="Library" />
 </platform>
 ```
-
-Plugin that uses a client certificate for authentication.
 
 ## Usage
 
@@ -57,9 +62,21 @@ Install the plugin, for example:
     $ cd hello
     $ cordova plugin add https://github.com/mwaylabs/cordova-plugin-client-certificate
 
-Install plugin File
+Install File API plugin:
 
     $ cordova plugin add cordova-plugin-file
+
+### Android keychain
+
+Similar to [`johannes-staehlin/cordova-client-cert-authentication`](https://github.com/johannes-staehlin/cordova-client-cert-authentication), as documented in: [`johannes-staehlin/cordova-client-cert-authentication`](https://github.com/johannes-staehlin/cordova-client-cert-authentication)
+
+### Use with file association
+
+**for iOS ONLY:**
+
+This plugin version associates itself with the `myp12` extension in plist on iOS only when it is added to a Cordova app, as specified in `plugin.xml`.
+
+If the user tells another iOS application such as Mail to open a `myp12` file with a Cordova app that uses this plugin version, this plugin will use the certificate from the `myp12` file. No special JavaScript code is required for this file association to function.
 
 ### Sample program
 
@@ -139,8 +156,7 @@ Run the code
 
 ## TODO
 
-- Test on Android and document any possible differences
-- register certificate from received `openURL` callback on iOS
+- Test updated plugin version on Android and document any possible differences
 
 ## For future consideration
 
