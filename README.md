@@ -24,7 +24,7 @@ Specific for iOS:
 
 UPDATES NOT TESTED on Android:
 
-- Android platform implementation was replaced with an implementation similar to johannes-staehlin/cordova-client-cert-authentication, which is not expected to work with JavaScript API at all.
+- Android platform implementation was replaced with an implementation that is almost the same as [`johannes-staehlin/cordova-client-cert-authentication`](https://github.com/johannes-staehlin/cordova-client-cert-authentication), which does not work with any JavaScript API at all (see documentation below).
 
 ## Usage
 
@@ -68,9 +68,7 @@ Install File API plugin:
 
 ### Android keychain
 
-Similar to [`johannes-staehlin/cordova-client-cert-authentication`](https://github.com/johannes-staehlin/cordova-client-cert-authentication), as documented in: [`johannes-staehlin/cordova-client-cert-authentication`](https://github.com/johannes-staehlin/cordova-client-cert-authentication)
-
-This plugin adds certificate-based authentication (SSO) to your cordova application. There is no extra coding or android  knowledge required when using this plugin. It does not contain any JavaScript part since it just waits until the SSLSocket asks the client for a certificate and then shows the default client-cert pop-up you would also get when visiting your web page using the android chrome browser.
+This plugin adds certificate-based authentication (SSO) to your cordova application. There is no extra coding or Android platform knowledge required when using this plugin on Android. It does not contain any JavaScript part since it just waits until the SSLSocket asks the client for a certificate and then shows the default client-cert pop-up you would also get when visiting your web page using the Android Chrome browser.
 
 ### Use with file association
 
@@ -80,13 +78,15 @@ This plugin version associates itself with the `myp12` extension in plist on iOS
 
 If the user tells another iOS application such as Mail to open a `myp12` file with a Cordova app that uses this plugin version, this plugin will use the certificate from the `myp12` file. No special JavaScript code is required for this file association to function.
 
-### Sample program
+### Sample programs
+
+**for iOS ONLY:**
 
 **WARNING:** Client certificate should NEVER be included in the `www` folder or any other part of a published app.
 
 #### Quick sample
 
-Copy a client certificate into the `www` folder.
+FOR TESTING PURPOSES ONLY (see warning above): Copy a client certificate into the `www` folder.
 
 Edit `www/js/index.js` and add the following code inside `onDeviceReady`:
 
@@ -96,7 +96,7 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`:
 
 #### With File API
 
-- Copy of an embedded certificate in `www` (read only) to a directory accessible in read/write
+- FOR TESTING PURPOSES ONLY (see warning above): Copy of an embedded certificate in `www` (read only) to a directory accessible in read/write
 - Retrieve the final path and execute the handshake SSL
 
 Add the following code inside `onDeviceReady`:
@@ -163,7 +163,6 @@ Run the code
 ## For future consideration
 
 - Prompt the user for a p12 certificate password on iOS, if necessary. Native dialog prompt would be ideal; using JavaScript on this plugin or callback to the application code would also be possible.
-- ~~Combine with johannes-staehlin/cordova-client-cert-authentication, if possible~~ _- done_
 - Add Windows platform
 
 ## More Info
@@ -172,47 +171,18 @@ For more information on setting up Cordova see [the Cordova CLI documentation](h
 
 For more info on plugins see the [Cordova Plugin Development Guide](https://cordova.apache.org/docs/en/latest/guide/hybrid/plugins/index.html)
 
-__INFO FROM <https://github.com/johannes-staehlin/cordova-client-cert-authentication> for Android:__
-
-# cordova-client-cert-authentication
-
-## Usage
-Follow the official [Get Started](https://cordova.apache.org/#getstarted) guide of cordova or use your existing application.
-
-Add the following plugin to your `config.xml`
-```xml
-<plugin name="cordova-client-cert-authentication" version="1" />
-```
-
-Then run your usual commands:
-```bash
-cordova platform add android
-cordova build
-...
-```
-
-<!-- XXX GONE:
-## Why is there no support for iOS?
-That's not easy to answer - the main point is, that iOS handles client certificates in a different way than android. [This comment](https://github.com/johannes-staehlin/cordova-client-cert-authentication/issues/5#issuecomment-424494990) provides a good summary:
-
-> On Android the user can download and install a standard certificate on the device, then use the standard selection mechanism to select the certificate needed to access a server. On iOS this is not really possible.
-> 
-> On iOS, the application has to open the certificate file and configure or store it somehow. But I think the certificate file cannot have the standard p12 extension since iOS has its own handler for that extension. And it may be necessary for the iOS app to handle user password very carefully, meaning never store user password itself.
-
-This means, Android applications can "ask for access" to the main KeyStore of the OS, while on iOS the certificate has to be  "imported into keychain of the app" in any way, thus a custom implementation is needed (please **never** ship the client certificate with the app in the assert folder).
-Therefore, I am not sure if a common cordova plugin even makes sense - but if someone comes up with a good PR, I am open to merge it.
-See [#5](https://github.com/johannes-staehlin/cordova-client-cert-authentication/issues/5) for the full discussion. 
-
-- -->
-
 ## Contribution
+
 Feel free to contribute code to this project through GitHub by forking the repository and sending a pull request.
 
-
 ## License
-    
+
+**Copyright for Android:**
+
     Copyright 2018 Johannes Stählin
-    
+
+**LICENSE for both Android and iOS:**
+
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
@@ -224,3 +194,7 @@ Feel free to contribute code to this project through GitHub by forking the repos
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+**Additional LICENSE for some code for iOS:**
+
+[Apple MIT License](https://spdx.org/licenses/AML.html)
