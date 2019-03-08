@@ -33,6 +33,8 @@
     <repo>https://github.com/ccafix/cordova-plugin-client-certificate-support.git</repo>
     <issue>https://github.com/ccafix/cordova-plugin-client-certificate-support/issues</issue>
 
+    <!-- NOT INCLUDED in this plugin version: <engines ... > -->
+
     <!-- ios -->
     <platform name="ios">
         <js-module src="www/clientCertificate.js" name="clientCertificate">
